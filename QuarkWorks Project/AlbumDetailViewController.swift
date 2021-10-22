@@ -9,9 +9,12 @@ import UIKit
 
 class AlbumDetailViewController: UIViewController {
     
+    // Album variable from the Segue
     var album: Album?
+    // Rank variable from Segue since not from the API JSON
     var albumRank: String?
     
+    // Outlets for the Detail ViewController
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var songName: UILabel!
     @IBOutlet weak var artistName: UILabel!
@@ -29,12 +32,14 @@ class AlbumDetailViewController: UIViewController {
         artistName.text = album?.artistName!
         rank.text = "Rank: \(albumRank ?? "N/A")"
         
+        // Loop through the Album genres and put each Genre name into an array
         var genreNames = [String]()
              
         for i in 0..<(album?.genres?.count)!{
             genreNames.append((album?.genres![i].name)!)
         }
         
+        // Join the Genre names with a comma
         genres.text = "Genres: \(genreNames.joined(separator: ", "))"
         
         advisoryRating.text = "Advisory Rating: \(album?.advisoryRating! ?? "N/A")"
@@ -42,7 +47,7 @@ class AlbumDetailViewController: UIViewController {
         
     }
     
-    
+    // Sets the image view to the Data from the Artwork URL
     func setImage(from url: String) {
         guard let imageURL = URL(string: url) else { return }
 

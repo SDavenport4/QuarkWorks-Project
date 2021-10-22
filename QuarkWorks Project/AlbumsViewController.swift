@@ -9,7 +9,7 @@ import UIKit
 
 class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
     
-
+    // Outlets from the ViewController
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pickerView: UIPickerView!
@@ -17,6 +17,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     var fetchData = FetchData()
     var albums = [Album]() {
@@ -63,6 +64,8 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         
         super.viewDidLoad()
+        
+        // Setting delegate and datasource on pickerView and tableView
         tableView.delegate = self
         tableView.dataSource = self
         pickerView.delegate = self
@@ -73,6 +76,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
     }
     
+    // Call to fetch the albums with the amount selected from the pickerView
     func getAlbums(){
         // Call the fetch data method to call the API and set data
         fetchData.fetchData(amount: self.amount) { albums in
@@ -82,6 +86,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // When the "Change" button is clicked, show the activity view and the pickerView
     @IBAction func onClick(_ sender: Any) {
         self.activityView.isHidden = false
         self.pickerView.isHidden = false
@@ -126,14 +131,19 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
     }
+    
+    // Returns 1 as there is only 1 component. Could be 2 for a favorites category
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
+    // Returns the size of the numbers array
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return numbers.count
     }
     
+    
+    // Sets up all the items in the pickerview from the array of numbers
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let title = numbers[row]
         return "\(title)"

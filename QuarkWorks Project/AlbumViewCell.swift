@@ -8,7 +8,8 @@
 import UIKit
 
 class AlbumViewCell: UITableViewCell {
-
+    
+    // Outlets from the Cell ViewController
     @IBOutlet weak var songName: UILabel!
     @IBOutlet weak var artistName: UILabel!
     @IBOutlet weak var artwork: UIImageView!
