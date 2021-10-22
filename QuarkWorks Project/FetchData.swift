@@ -46,8 +46,6 @@ class FetchData{
             if let receivedData = data, let result = Result.parseResults(from: receivedData) {
                 albums = try! result.results
                 
-                
-                
                 // Calls the completion Handler to pass data to our view
                 completionHandler(albums)
             }

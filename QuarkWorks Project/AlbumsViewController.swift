@@ -10,11 +10,10 @@ import UIKit
 class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
     
 
-    
-
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -40,10 +39,12 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // Values to show in the picker view. Range of albums allowed to pull in
     let numbers = Array(1...100)
     
     // Amount to pull from the API
     var amount: Int = 25
+    
     
     
     override func viewDidLoad() {
@@ -84,6 +85,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func onClick(_ sender: Any) {
         self.activityView.isHidden = false
         self.pickerView.isHidden = false
+        self.doneButton.isHidden = false
         self.pickerView.selectRow(self.amount - 1, inComponent: 0, animated: false)
     }
     
@@ -137,14 +139,21 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return "\(title)"
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        amount = numbers[row]
+    // Called when Done is clicked on the picker view. Processes the API call
+    
+    @IBAction func doneClicked(_ sender: Any) {
         self.pickerView.isHidden = true
+        self.doneButton.isHidden = true
         self.activityView.isHidden = false
         self.activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
         self.amountLabel.text = "Albums Displayed: \(self.amount)"
         getAlbums()
+    }
+    
+    // Update amount of albums when selected in pickerview
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        amount = numbers[row]
     }
     
     
