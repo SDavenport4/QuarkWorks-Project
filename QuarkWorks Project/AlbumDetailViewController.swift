@@ -15,8 +15,10 @@ class AlbumDetailViewController: UIViewController {
     // Rank variable from Segue since not from the API JSON
     var albumRank: String?
     
+    // Array off all favorite album ids
     var favorites: [String] = []
     
+    // Pull in the User defaults object to access favorites
     var userDefaults = UserDefaults.standard
     
     // Outlets for the Detail ViewController
@@ -57,12 +59,12 @@ class AlbumDetailViewController: UIViewController {
         // Join the Genre names with a comma
         genres.text = "Genres: \(genreNames.joined(separator: ", "))"
         
-        advisoryRating.text = "Advisory Rating: \(album?.advisoryRating! ?? "N/A")"
-        releaseDate.text = "Release Date: \(album?.releaseDate! ?? "N/A")"
+        advisoryRating.text = "Advisory Rating: \(album?.advisoryRating ?? "N/A")"
+        releaseDate.text = "Release Date: \(album?.releaseDate ?? "N/A")"
         
     }
     
-    
+    // Called when the Favorite icon is clicked to add / remove to favorites and update the icon
     @IBAction func favoriteClick(_ sender: UIButton) {
         if favorites.contains(where: {$0 == (album?.id)!}){
             favorites.removeAll(where: {$0 == (album?.id)!})

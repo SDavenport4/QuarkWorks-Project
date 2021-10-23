@@ -19,7 +19,10 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    // Favorite album array
     var favorites: [String] = []
+    
+    // Get the user defaults object to access favorites from disk
     var userDefaults = UserDefaults.standard
     
     var fetchData = FetchData()
@@ -81,6 +84,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Collect the favorite albums from the phone and reload the tableview
         favorites = userDefaults.array(forKey: "favorites") as? [String] ?? [String]()
         tableView.reloadData()
     }
@@ -97,6 +101,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // Get which row button was clicked and update in favorites array and update ico=-p
     @IBAction func favoriteAlbumClick(_ sender: UIButton) {
         var superview = sender.superview
         while let view = superview, !(view is AlbumViewCell){
