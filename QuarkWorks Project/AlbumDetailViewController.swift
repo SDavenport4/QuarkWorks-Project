@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AlbumDetailViewController: UIViewController {
     
@@ -13,6 +14,10 @@ class AlbumDetailViewController: UIViewController {
     var album: Album?
     // Rank variable from Segue since not from the API JSON
     var albumRank: String?
+    
+    var favorites: [String] = []
+    
+    var userDefaults = UserDefaults.standard
     
     // Outlets for the Detail ViewController
     @IBOutlet weak var artwork: UIImageView!
@@ -22,9 +27,12 @@ class AlbumDetailViewController: UIViewController {
     @IBOutlet weak var genres: UILabel!
     @IBOutlet weak var advisoryRating: UILabel!
     @IBOutlet weak var releaseDate: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        favorites = userDefaults.array(forKey: "favorites") as? [String] ?? [String]()
         
         // Set the image view to the URL data - Force unwrapping, not safe
         setImage(from: (album?.artworkUrl)!)
@@ -39,12 +47,31 @@ class AlbumDetailViewController: UIViewController {
             genreNames.append((album?.genres![i].name)!)
         }
         
+        
+        if favorites.contains(where: {$0 == (album?.id)!}){
+            favoriteButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        }else{
+            favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
+        }
+        
         // Join the Genre names with a comma
         genres.text = "Genres: \(genreNames.joined(separator: ", "))"
         
         advisoryRating.text = "Advisory Rating: \(album?.advisoryRating! ?? "N/A")"
         releaseDate.text = "Release Date: \(album?.releaseDate! ?? "N/A")"
         
+    }
+    
+    
+    @IBAction func favoriteClick(_ sender: UIButton) {
+        if favorites.contains(where: {$0 == (album?.id)!}){
+            favorites.removeAll(where: {$0 == (album?.id)!})
+            favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
+        }else{
+            favorites.append((album?.id)!)
+            favoriteButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        }
+        userDefaults.set(favorites, forKey: "favorites")
     }
     
     // Sets the image view to the Data from the Artwork URL
@@ -61,6 +88,8 @@ class AlbumDetailViewController: UIViewController {
             }
         }
     }
+    
+    
 
     /*
     // MARK: - Navigation

@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+
+
 // Structure for the Albums
 struct Album: Codable {
     var artistID: String?
@@ -94,5 +96,4 @@ struct Result: Codable {
         return nil
     }
 }
-
 

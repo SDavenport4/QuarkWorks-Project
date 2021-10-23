@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -18,6 +19,8 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var favorites: [String] = []
+    var userDefaults = UserDefaults.standard
     
     var fetchData = FetchData()
     var albums = [Album]() {
@@ -45,6 +48,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Amount to pull from the API
     var amount: Int = 25
+    
     
     
     
@@ -76,6 +80,13 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        favorites = userDefaults.array(forKey: "favorites") as? [String] ?? [String]()
+        tableView.reloadData()
+    }
+
+    
+    
     // Call to fetch the albums with the amount selected from the pickerView
     func getAlbums(){
         // Call the fetch data method to call the API and set data
@@ -85,6 +96,35 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
+    
+    @IBAction func favoriteAlbumClick(_ sender: UIButton) {
+        var superview = sender.superview
+        while let view = superview, !(view is AlbumViewCell){
+            superview = view.superview
+        }
+        
+        guard let cell = superview as? AlbumViewCell else {
+            return
+        }
+        
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        let currentAlbum: Album = albums[indexPath.row]
+        
+        
+        if favorites.contains(where: {$0 == currentAlbum.id!}){
+            sender.setImage(UIImage(systemName: "star"), for: .normal)
+            favorites.removeAll(where: {$0 == currentAlbum.id!})
+        }else{
+            sender.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            favorites.append(currentAlbum.id!)
+        }
+        userDefaults.set(favorites, forKey: "favorites")
+        
+    }
+    
     
     // When the "Change" button is clicked, show the activity view and the pickerView
     @IBAction func onClick(_ sender: Any) {
@@ -102,8 +142,16 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             // Get current cell, and get the album from that row index from Album array
             let currentAlbum = albums[indexPath.row]
             
+            var design: String = ""
+            
+            if favorites.contains(where: {$0 == currentAlbum.id!}){
+                design = "star.fill"
+            }else{
+                design = "star"
+            }
+            
             // Update the cell properties to the Album values
-            cell.UpdateCellView(album: currentAlbum, albumRank: indexPath.row + 1)
+            cell.UpdateCellView(album: currentAlbum, albumRank: indexPath.row + 1, favorite: design)
             
             return cell
         }else{
@@ -165,8 +213,6 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         amount = numbers[row]
     }
-    
-    
     
     
 
