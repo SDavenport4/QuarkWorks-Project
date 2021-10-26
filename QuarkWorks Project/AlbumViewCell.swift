@@ -20,6 +20,7 @@ class AlbumViewCell: UITableViewCell {
         songName.text = "\(albumRank). \(album.name ?? "Undefined")"
         artistName.text = album.artistName
         
+        // Set the Icon of the favorites button to the correct icon
         favoriteIcon.setImage(UIImage(systemName: favorite), for: .normal)
         
         // Not safe, as if the API call does not bring in a URL, the app explodes.

@@ -119,9 +119,9 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let currentAlbum: Album = albums[indexPath.row]
         
         
-        if favorites.contains(where: {$0 == currentAlbum.id!}){
+        if favorites.contains(where: {$0 == currentAlbum.id ?? "N/A"}){
             sender.setImage(UIImage(systemName: "star"), for: .normal)
-            favorites.removeAll(where: {$0 == currentAlbum.id!})
+            favorites.removeAll(where: {$0 == currentAlbum.id ?? "N/A"})
         }else{
             sender.setImage(UIImage(systemName: "star.fill"), for: .normal)
             favorites.append(currentAlbum.id!)
@@ -149,7 +149,8 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             var design: String = ""
             
-            if favorites.contains(where: {$0 == currentAlbum.id!}){
+            // Check if the current album ID is in the facvorites and set the Favorite button icon accordingly
+            if favorites.contains(where: {$0 == currentAlbum.id ?? "N/A"}){
                 design = "star.fill"
             }else{
                 design = "star"

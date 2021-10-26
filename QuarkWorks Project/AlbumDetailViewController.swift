@@ -38,19 +38,19 @@ class AlbumDetailViewController: UIViewController {
         
         // Set the image view to the URL data - Force unwrapping, not safe
         setImage(from: (album?.artworkUrl)!)
-        songName.text = album?.name!
-        artistName.text = album?.artistName!
+        songName.text = album?.name ?? "N/A"
+        artistName.text = album?.artistName ?? "N/A"
         rank.text = "Rank: \(albumRank ?? "N/A")"
         
         // Loop through the Album genres and put each Genre name into an array
         var genreNames = [String]()
              
-        for i in 0..<(album?.genres?.count)!{
+        for i in 0..<(album?.genres?.count ?? 0){
             genreNames.append((album?.genres![i].name)!)
         }
         
-        
-        if favorites.contains(where: {$0 == (album?.id)!}){
+        // Check if the current album ID is in the facvorites and set the Favorite button icon accordingly
+        if favorites.contains(where: {$0 == (album?.id ?? "N/A")}){
             favoriteButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
         }else{
             favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
@@ -66,11 +66,11 @@ class AlbumDetailViewController: UIViewController {
     
     // Called when the Favorite icon is clicked to add / remove to favorites and update the icon
     @IBAction func favoriteClick(_ sender: UIButton) {
-        if favorites.contains(where: {$0 == (album?.id)!}){
-            favorites.removeAll(where: {$0 == (album?.id)!})
+        if favorites.contains(where: {$0 == (album?.id ?? "N/A")}){
+            favorites.removeAll(where: {$0 == (album?.id ?? "N/A")})
             favoriteButton.setImage(UIImage(systemName: "star"), for: .normal)
         }else{
-            favorites.append((album?.id)!)
+            favorites.append((album?.id ?? "N/A"))
             favoriteButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
         }
         userDefaults.set(favorites, forKey: "favorites")
