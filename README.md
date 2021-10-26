@@ -1,5 +1,5 @@
 # QuarkWorks-Project
-QuarkWorks Take-Home Project Interview
+Shawn Davenport QuarkWorks Take-Home Project Interview
 
 # Key Features
 - Customizable amount of Albums from API
