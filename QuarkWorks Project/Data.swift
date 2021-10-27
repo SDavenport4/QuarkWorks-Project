@@ -51,7 +51,6 @@ struct Album: Codable {
 // Parses out the hierarchical
 struct Result: Codable {
     
-    
     var results: [Album]
     
     // Gets top level JSON key

@@ -15,6 +15,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -51,7 +52,6 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Amount to pull from the API
     var amount: Int = 25
-    
     
     
     
@@ -136,6 +136,7 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.activityView.isHidden = false
         self.pickerView.isHidden = false
         self.doneButton.isHidden = false
+        self.cancelButton.isHidden = false
         self.pickerView.selectRow(self.amount - 1, inComponent: 0, animated: false)
     }
     
@@ -205,9 +206,20 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Called when Done is clicked on the picker view. Processes the API call
     
-    @IBAction func doneClicked(_ sender: Any) {
+    @IBAction func cancelClicked(_ sender: Any) {
         self.pickerView.isHidden = true
         self.doneButton.isHidden = true
+        self.cancelButton.isHidden = true
+        self.activityView.isHidden = true
+    }
+    
+    @IBAction func doneClicked(_ sender: Any) {
+        
+        amount = numbers[self.pickerView.selectedRow(inComponent: 0)]
+        
+        self.pickerView.isHidden = true
+        self.doneButton.isHidden = true
+        self.cancelButton.isHidden = true
         self.activityView.isHidden = false
         self.activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
@@ -217,7 +229,8 @@ class AlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Update amount of albums when selected in pickerview
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        amount = numbers[row]
+        // Unused as the Cancel & Done button control this flow now.
+        //amount = numbers[row]
     }
     
     
